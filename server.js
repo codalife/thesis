@@ -1,31 +1,42 @@
 const express = require('express');
-const elasticsearch = require('elasticsearch');
 const path = require('path');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
-const client = new elasticsearch.Client();
+const client = require('./dbs/elasticsearch');
 
 const app = express();
 
+function hrdiff(t1, t2) {
+    var s = t2[0] - t1[0];
+    var mms = t2[1] - t1[1];
+    return s*1e9 + mms;
+}
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(morgan('combined'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.post('/test', (req, res) => {
+  const t1 = process.hrtime();
+  console.log(`memory used: ${process.memoryUsage().heapUsed}`)
 
-app.get('/', (req, res) => {
-  client.get({
-    index: 'video-mcrservice',
-    type: 'user',
-    id: 100,
-  }).then((resp) => {
+  client.search(777).then((resp) => {
+    const t2 = process.hrtime();
+    console.log(`latency: ${hrdiff(t1, t2)}`);
     res.send(resp);
   });
 });
 
 app.post('/', (req, res) => {
+
   client.index({
-    index: 'video-mcrservice',
+    index: 'video-microservice',
     type: 'user',
     id: 101,
     body: {
-      name: 'Liz Kong',
       content: 'It all started when...',
       date: '2017-12-17',
     },
@@ -35,7 +46,12 @@ app.post('/', (req, res) => {
 });
 
 app.get('/graph', (req, res) => {
+  const t1 = process.hrtime();
   res.send();
+  const t2 = process.hrtime();
+  console.log(`latency: ${hrdiff(t1, t2)}`);
 });
 
-app.listen('3000', () => console.log('app running on 3000'));
+app.listen('8000', () => console.log('app running on 8000'));
+
+module.exports = app;

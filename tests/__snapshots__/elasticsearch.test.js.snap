@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`has have methods 1`] = `
+Object {
+  "addToIndex": [Function],
+  "closeConnection": [Function],
+  "createIndex": [Function],
+  "dropIndex": [Function],
+  "getFromIndex": [Function],
+  "search": [Function],
+  "waitForIndexing": [Function],
+}
+`;
