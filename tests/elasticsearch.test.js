@@ -1,5 +1,5 @@
 const script = require('../dbs/elasticsearch');
 
-test('has have methods', () => {
+test('has all methods', () => {
 	expect(script).toMatchSnapshot();
 })

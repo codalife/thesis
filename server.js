@@ -3,9 +3,16 @@ const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
+const sequelize = require('./dbs/db');
 const client = require('./dbs/elasticsearch');
 
 const app = express();
+
+function logWrapper(executable) {
+  const t1 = process.hrtime();
+
+  executable().then()
+}
 
 function hrdiff(t1, t2) {
     var s = t2[0] - t1[0];
@@ -20,7 +27,7 @@ app.use(morgan('combined'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/test', (req, res) => {
-  const t1 = process.hrtime();
+
   console.log(`memory used: ${process.memoryUsage().heapUsed}`)
 
   client.search(777).then((resp) => {
