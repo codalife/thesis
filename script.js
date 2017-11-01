@@ -1,105 +1,138 @@
-const elasticsearch = require('elasticsearch');
 const Chance = require('chance');
 const gen = require('sentence-generator');
-const fs = require('fs');
+const moment = require('moment');
 // const probability = require('probability-distributions');
+const Client = require('./dbs/elasticsearch');
 
 const Gen = gen('./lepetite.txt');
 const chance = new Chance();
-const Client = new elasticsearch.Client();
 
-for (let i = 1; i < 1001; i += 1) {
-  Client.index({
-    index: 'user',
-    type: 'author',
-    id: i,
-    body: {
-      name: chance.name(),
-      state: chance.state(),
-      date: chance.date(),
-    },
-  }, (err) => {
-    if (err) throw err;
-  });
-}
+const numberOfUsers = 20000;
+const numberOfVideos = 1000;
 
-function deleteIndex() {
-  Client.indices.delete({
-    index: '_all',
-  }, (err, res) => {
-    if (err) {
-      throw err;
-    }
-  });
-}
+// Client.dropIndex('video-microservice').then(d => console.log('dropped'));
 
-
-const createUsers = (num, curr = 1) => {
-  if (curr < num) {
-    Client.index({
-      index: 'video-mcrservice',
-      type: 'user',
-      id: curr,
-      body: {
+const createUsers = (number) => {
+  const recursive = (count = 0) => {
+    if (count < number) {
+      const user = {
         name: chance.name(),
         state: chance.state(),
-        date: chance.date(),
-      },
-    }, (err) => {
-      if (err) throw err;
-      createUsers(num, ++curr);
-    });
+      }
+
+      Client.addToIndex('video-microservice', 'user', count, user)
+      .then(data => {
+        // console.log(`saved ${JSON.stringify(user)}`)
+        recursive(++count);
+      });
+    }
   }
-};
-
-createUsers(100);
-
-// --------------- create video titles ----------------------
-for (let i = 0; i < 1000; i += 1) {
-  console.log(Gen.take(1));
+  recursive();
 }
 
+const createVideos = (number) => {
+  const recursive = (count = 0) => {
+    if (count < number) {
+      const video =  {
+        title: Gen.take(1),
+        author: Math.floor(Math.random() * 500)
+      }
+      Client.addToIndex('video-microservice', 'videos', count, video)
+      .then(data => {
+        // console.log(`saved ${JSON.stringify(video)}`)
+        recursive(++count);
+      });
+    }
+  }
 
-// ---------------- create long term trend -------------------
-
-
-let current = 1000;
-// let sum = current;
-
-let wstream = fs.createWriteStream('./public/data.tsv');
-
-wstream.write('date close\n');
-
-for (let j = 0; j < 90; j += 1) {
-  const direction = Math.random() < 0.5 && current > 300 ? -1 : 1;
-  current += direction * Math.floor(Math.random() * 200);
-  // sum += current;
-  wstream.write(`${j} ${current}\n`);
+  recursive();
 }
-wstream.end();
 
+function createView(data) {
+  return  Client.addToIndex('video-microservice', 'test', data);
+}
+
+function createBulkViewsForSingleVideo (videoId, date, totalViews, count = 0) {
+  const arrOfPromises = [];
+
+  for (let i = 0; i < totalViews; i += 1) {
+    arrOfPromises.push(createView(i, {videoId, date: date.format(), userId: Math.floor(Math.random() * 500)}));
+  }
+  return Promise.all(arrOfPromises);
+
+}
+
+// createBulkViewsForSingleVideo(20, moment(), 200).then(() => console.log('success'));
+function pseries(list) {
+  var p = Promise.resolve();
+  return list.reduce(function(pacc, fn) {
+    return pacc = pacc.then(fn);
+  }, p);
+}
+
+// function createDayViews (total, amount = 0) {
+//   return new Pro
+//   if (numberOfViews < total) {
+//     const viewsOfSingleVideo = Math.floor(paretoDistribution(1, 0.7) - 1);
+//     const singleVideoId = Math.floor(Math.random() * 100);
+
+//     if (viewsOfSingleVideo > 0 && viewsOfSingleVideo < 300) {
+//       arrForPromises.push(createBulkViewsForSingleVideo(singleVideoId, date, viewsOfSingleVideo).catch(err => console.log(err)));
+//       numberOfViews += viewsOfSingleVideo;
+//     }
+//   }
+// }
+
+const createTrend = (days, start, min) => {
+  let date = new moment().subtract(days, 'days');
+
+  const recursive = (count = 0, last = start, date) => {
+    if (count < days) {
+      const direction = Math.random < 0.5 ? -1 : 1;
+      const amount = last += direction * 100;
+      date = date.add(1, 'days');
+
+      let numberOfViews = 0;
+
+      const distribution = [];
+
+      const arrForPromises = [];
+
+      while (numberOfViews < amount) {
+        let singleVideoViews = paretoDistribution(1, 0.7);
+        if (singleVideoViews < amount * 0.3) {
+          numberOfViews += singleVideoViews;
+          distribution.push(singleVideoViews);
+        }
+      }
+
+      distribution.forEach(count => {
+        const videoId = Math.floor(Math.random() * numberOfVideos);
+        for (let i = 0; i < count; i += 1) {
+          arrForPromises.push({videoId, date});
+        }
+      })
+
+      arrForPromises.push({videoId: -1, date});
+      console.log(date.format())
+      const first = Promise.resolve();
+
+      arrForPromises.reduce((promise, data) => {
+        const {videoId, date} = data;
+        if (videoId === -1) {
+          return promise.then(() => recursive(++count, amount, date));
+        }
+        return promise.then(() => createView({videoId, date}).catch(err => console.log(err)));
+      }, first);
+
+    }
+  }
+  recursive(0, start, date);
+}
+
+createTrend(30, 1000, 300);
 
 function paretoDistribution(minimum, alpha) {
   const u = 1.0 - Math.random();
   return minimum / (u ** (1.0 / alpha));
 }
-
-const pareto = [];
-
-wstream = fs.createWriteStream('./public/pareto.tsv');
-
-let paretoSum = 0;
-
-wstream.write('views\n');
-
-while (paretoSum < 10000) {
-  const views = Math.floor(paretoDistribution(1, 0.7) - 1);
-  if (views < 1000) {
-    paretoSum += views;
-    // pareto.push(Math.floor(paretoDistribution(1, 0.7) - 1))
-	    wstream.write(`${views}\n`);
-  }
-}
-
-pareto.sort((a, b) => a - b);
-wstream.end();

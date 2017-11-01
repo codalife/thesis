@@ -1,0 +1,6 @@
+Resources:
+	AppNode:
+		Type: AWS::EC2::Instance
+		Properties: t.2.micro
+		ImageId: ami-09d2fb69
+		KeyName: aws-videos

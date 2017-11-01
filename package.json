@@ -4,20 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "start": "nodemon server.js"
   },
   "author": "Anuar Zhuken",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.142.0",
+    "body-parser": "^1.18.2",
     "chance": "^1.0.11",
     "elasticsearch": "^13.3.1",
     "express": "^4.16.2",
+    "moment": "^2.19.1",
+    "morgan": "^1.9.0",
+    "pg": "^7.3.0",
     "sentence-generator": "^1.0.1",
-    "sentencer": "^0.1.5"
+    "sentencer": "^0.1.5",
+    "sequelize": "^4.20.1",
+    "spm-agent-nodejs": "^1.30.9"
   },
   "devDependencies": {
     "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "jest": "^21.2.1"
   }
 }
