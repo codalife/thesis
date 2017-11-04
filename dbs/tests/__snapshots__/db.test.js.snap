@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`has have methods 1`] = `
+exports[`has to exist 1`] = `
 Object {
-  "category": [Function],
+  "category": Object {},
   "sequelize": Sequelize {
     "config": Object {
       "database": "videos",
@@ -321,7 +321,6 @@ Object {
           "statement_timeout": false,
           "user": "Anuar",
         },
-        "native": null,
         "types": Object {
           "arrayParser": Object {
             "create": [Function],
@@ -702,7 +701,6 @@ Object {
             "statement_timeout": false,
             "user": "Anuar",
           },
-          "native": null,
           "types": Object {
             "arrayParser": Object {
               "create": [Function],
@@ -790,12 +788,10 @@ Object {
       "models": Array [
         [Function],
         [Function],
-        [Function],
       ],
       "sequelize": [Circular],
     },
     "models": Object {
-      "category": [Function],
       "video": [Function],
       "view": [Function],
     },
@@ -985,7 +981,6 @@ Object {
                 "statement_timeout": false,
                 "user": "Anuar",
               },
-              "native": null,
               "types": Object {
                 "arrayParser": Object {
                   "create": [Function],

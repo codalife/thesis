@@ -8,11 +8,10 @@ Things to do in aws console
 
 const AWS = require('aws-sdk');
 AWS.config.update({region:'us-west-1'});
-AWS.config.loadFromPath('./credentials.json');
+AWS.config.loadFromPath('./aws/credentials.json');
 
 // Create SQS and SNS service object
 const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
-const sns = new AWS.SNS({apiVersion: '2010-03-31'});
 
 const listQ = () => {
   return new Promise ((resolve, reject) => {
@@ -41,28 +40,6 @@ const getQUrl = (qName) => {
     });
   });
 }
-
-
-const pubMessage = (topic, message = {}, msgAttr = {}) => {
-  return new Promise ((resolve, reject) => {
-    // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SNS.html#publish-property
-    var params = {
-      TopicArn: topic, // topic name
-      Message: JSON.stringify(message), /* required */ // json object
-      MessageAttributes: msgAttr,
-    };
-    sns.publish(params, function(err, data) {
-      if (err) {
-        console.log(err, err.stack); // an error occurred
-        reject(err);
-      }
-      else {
-        console.log(data);           // successful response
-        resolve(data);
-      }
-    });
-  });
-};
 
 const deleteMessage = (qUrl, receiptHandle) => {
   var deleteParams = {
@@ -104,17 +81,16 @@ const receiveMessage = (qUrl) => {
         reject(err);
       } else {
         resolve(data);
-        deleteMessage(qUrl, data.Messages[0].ReceiptHandle);
+
+        if (data.Messages){
+          deleteMessage(qUrl, data.Messages[0].ReceiptHandle);
+        }
       }
     });
   });
 }
 
-
-
 module.exports.sqs = sqs;
-module.exports.sns = sns;
 module.exports.listQ = listQ;
 module.exports.getQUrl = getQUrl;
-module.exports.pubMessage = pubMessage;
 module.exports.receiveMessage = receiveMessage;

@@ -1,23 +1,28 @@
-Project Name
+# Project Name
 
-Video microservice for YT like recommendation system
+### Video microservice for YT like recommendation system
 
-Table of Contents
+#Table of Contents
 
-Usage
+# Usage
 Requirements
 Development
 Installing Dependencies
 Tasks
-Usage
 
+# Usage
 
+The microservice
 
-Requirements
+# Requirements
 
-Node 6.9.x
-Redis 3.2.x
-Postgresql 9.6.x
+* Node 6.9.x
+* Postgresql 9.6.x
+* ElasticSearch
+* Logstash
+* Kibana
+* AWS SQS
+* AWS SNS
 etc
 Other Information
 

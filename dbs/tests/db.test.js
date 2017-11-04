@@ -4,4 +4,3 @@ test('has to exist', () => {
 	expect(db).toMatchSnapshot();
 })
 
-test('')

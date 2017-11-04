@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1509755056489" clover="3.2.0">
+  <project timestamp="1509755056490" name="All files">
+    <metrics statements="34" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="0" elements="43" coveredelements="24" complexity="0" loc="34" ncloc="34" packages="2" files="6" classes="6">
+      <package name="dbs">
+        <metrics statements="18" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="0"/>
+        <file name="db.js" path="/Users/Anuar/Documents/projects/HackReactor/thesis/dbs/db.js">
+          <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="2" count="1" type="stmt"/>
+          <line num="3" count="1" type="stmt"/>
+          <line num="4" count="1" type="stmt"/>
+          <line num="6" count="1" type="stmt"/>
+        </file>
+        <file name="elasticsearch.js" path="/Users/Anuar/Documents/projects/HackReactor/thesis/dbs/elasticsearch.js">
+          <metrics statements="13" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="0"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="3" count="1" type="stmt"/>
+          <line num="5" count="1" type="stmt"/>
+          <line num="7" count="0" type="stmt"/>
+          <line num="12" count="0" type="stmt"/>
+          <line num="18" count="0" type="stmt"/>
+          <line num="27" count="0" type="stmt"/>
+          <line num="34" count="0" type="stmt"/>
+          <line num="37" count="0" type="stmt"/>
+          <line num="41" count="0" type="stmt"/>
+          <line num="44" count="0" type="stmt"/>
+          <line num="45" count="0" type="stmt"/>
+          <line num="46" count="0" type="stmt"/>
+        </file>
+      </package>
+      <package name="dbs.postgres">
+        <metrics statements="16" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <file name="Categories.js" path="/Users/Anuar/Documents/projects/HackReactor/thesis/dbs/postgres/Categories.js">
+          <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        </file>
+        <file name="Videos.js" path="/Users/Anuar/Documents/projects/HackReactor/thesis/dbs/postgres/Videos.js">
+          <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="2" count="1" type="stmt"/>
+          <line num="3" count="1" type="stmt"/>
+          <line num="5" count="1" type="stmt"/>
+          <line num="18" count="1" type="stmt"/>
+        </file>
+        <file name="Views.js" path="/Users/Anuar/Documents/projects/HackReactor/thesis/dbs/postgres/Views.js">
+          <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="2" count="1" type="stmt"/>
+          <line num="3" count="1" type="stmt"/>
+          <line num="5" count="1" type="stmt"/>
+          <line num="11" count="1" type="stmt"/>
+          <line num="13" count="1" type="stmt"/>
+        </file>
+        <file name="sequelize.js" path="/Users/Anuar/Documents/projects/HackReactor/thesis/dbs/postgres/sequelize.js">
+          <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="2" count="1" type="stmt"/>
+          <line num="3" count="1" type="stmt"/>
+          <line num="5" count="1" type="stmt"/>
+          <line num="10" count="1" type="stmt"/>
+        </file>
+      </package>
+    </metrics>
+  </project>
+</coverage>

@@ -2,11 +2,17 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const sqs = require('./aws/sqs');
+const sns = require('./aws/sns');
 
 const sequelize = require('./dbs/db');
 const client = require('./dbs/elasticsearch');
 
 const app = express();
+
+sqs.receiveMessage('https://sqs.us-west-1.amazonaws.com/993840186344/actionsFromBehavior')
+  .then(res => res.Messages && res.Messages.forEach(entry => console.log( JSON.parse(entry.Body).Message )))
+  .catch(err => console.log(err));
 
 function logWrapper(executable) {
   const t1 = process.hrtime();
@@ -57,6 +63,11 @@ app.get('/graph', (req, res) => {
   res.send();
   const t2 = process.hrtime();
   console.log(`latency: ${hrdiff(t1, t2)}`);
+});
+
+app.use((req, res) => {
+  console.log('got to unknown route');
+  res.status(500).end()
 });
 
 app.listen('8000', () => console.log('app running on 8000'));
